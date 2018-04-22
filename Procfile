@@ -1,1 +1,1 @@
-worker: node index.js
+cd acb
