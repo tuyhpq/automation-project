@@ -114,7 +114,7 @@ function login(name) {
     $self.login(name, accessToken).then((res) => {
         if (res.data.indexOf('Logout') === -1) {
             logError('Login failed')
-            restart()
+            restart(15)
             return
         } else {
             logNotice('Logged in successfully')
@@ -227,4 +227,4 @@ function restart(second = 0) {
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
-app.listen(process.env.PORT || 3000, () => console.log('Example app listening on port ' + (process.env.PORT || 3000)))
+app.listen(process.env.PORT || 3000, () => console.log('App listening on port ' + (process.env.PORT || 3000)))
