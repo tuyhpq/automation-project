@@ -1,9 +1,0 @@
-module.exports = {
-    'BASE_URL': 'https://vipfb.ru',
-    'USER_ID': '100007665604062',
-    'ACCESS_TOKEN': [
-        'EAAAAUaZA8jlABAKHCLLAwXOhskgjYlLo4f9bZC4NLPXuZAtTLqU3TBrIl5FlJOTZApMP42ioObpwDUwF1X7R5ZBfncvvEKaaAbcvILku3ZBsb8ZChWSBymJzFlqqz6Iwny5dMjkwBZCyaR1BhT5UG9eAv8FZAUZCyhZAiChxyGvRNhpc0sSfp6EmsQ8c3JK3hyVMvEZD',
-        'EAAAAUaZA8jlABAEYHUx0JVSPDdZAd548KZBzNWrtffcUkIxlfmxXmgMleI2SzR4F3BbPfUO4XcXjvynuhJYiZBVixT6n2zLbIoKNrOGbTeayt0XKc3XzuBeZCMZBcwpvJEDmUwnyaZBdOlZCWzc5z6PESnussxbNPj4OE943w4clgv2ZAqZAs9KByZCFGbSvRhiqCYZD'
-    ],
-    'OCR_KEY': '9bdf65ced588957'
-}
