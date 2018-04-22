@@ -3,6 +3,8 @@ const QueryString = require('querystring')
 const chalk = require('chalk')
 const $handle = require('./handle.js')
 const $config = require('./config.js')
+const express = require('express')
+const app = express()
 
 // use to log of error and success
 const logError = function (message) {
@@ -222,3 +224,7 @@ function restart(second = 0) {
     logNotice(`restarting, please wait ${second} seconds`)
     setTimeout(accessIndex, second * 1000)
 }
+
+app.get('/', (req, res) => res.send('Hello World!'))
+
+app.listen(process.env.PORT || 3000, () => console.log('Example app listening on port ' + (process.env.PORT || 3000)))
