@@ -29,6 +29,7 @@ const OCR_KEY = $config.OCR_KEY
 var indexToken = 0
 var accessToken = ACCESS_TOKEN[indexToken]
 var countSuccess = 0
+var waitingTime = null
 
 // config axios
 var axios = Axios.create({
@@ -160,8 +161,12 @@ function autoRequest() {
 
       logNotice('Time: ' + time)
       if (time > 0) {
+        time = parseInt(time / ACCESS_TOKEN.length)
+        if (waitingTime === null || waitingTime > time) {
+          waitingTime = time
+        }
         logError('please wait')
-        restart(parseInt(time / ACCESS_TOKEN.length))
+        restart(waitingTime)
         return
       }
 

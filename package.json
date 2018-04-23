@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "fanpage": "node like-fanpage-vipfb/server.js",
-    "debug": "node --inspect-brk server.js"
+    "debug": "node --inspect-brk server.js",
+    "debug:fanpage": "node --inspect-brk like-fanpage-vipfb/server.js"
   },
   "author": "quyhp",
   "license": "ISC",
