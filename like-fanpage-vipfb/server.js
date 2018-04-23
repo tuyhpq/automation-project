@@ -57,30 +57,19 @@ var $self = {
     return axios.get('/')
   },
   login(name, value) {
-    return axios.post('/', QueryString.stringify({
+    return axios.post('/x_login.php', QueryString.stringify({
       [name]: value,
-      'submit': 'Submit'
+      'submit': 'submit'
     }))
   },
-  getAutoRequest() {
-    return axios.get('/autorequest.php')
+  getAutoLikePage() {
+    return axios.get('/fanpage.php?type=myPageCustom')
   },
-  postAutoRequest(id, captchaBox) {
-    return axios.post('/autorequest.php', QueryString.stringify({
-      'id': id,
-      'captchaBox': captchaBox,
+  postAutoLikePage(id, name) {
+    return axios.post('/fanpage.php?type=myPageCustom', QueryString.stringify({
+      'limit': '25',
+      [name]: id,
       'submit': ''
-    }))
-  },
-  getCaptcha(url) {
-    return axios.get(url, { responseType: 'arraybuffer' })
-  },
-  parseBase64ImageToString(base64) {
-    var privateAxios = Axios.create()
-    privateAxios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-    return privateAxios.post('http://api.ocr.space/parse/image', QueryString.stringify({
-      'apikey': OCR_KEY,
-      'base64Image': 'data:image/png;base64,' + base64
     }))
   }
 }
@@ -125,7 +114,7 @@ function login(name) {
         return
       } else {
         logNotice('Logged in successfully')
-        autoRequest()
+        autoLikePage()
       }
     })
     .catch(() => {
@@ -133,27 +122,27 @@ function login(name) {
     })
 }
 
-function autoRequest() {
-  $self.getAutoRequest()
+function autoLikePage() {
+  $self.getAutoLikePage()
     .then((res) => {
       var data = res.data
 
       if (data.indexOf('Next Submit') === -1) {
-        logError('Cannot load autoRequest form')
+        logError('Cannot load autoLikePage form')
         restart()
         return
       }
 
       var time = $handle.getTime(data)
-      var urlCaptcha = $handle.getImage(data)
+      var namePost = $handle.getNamePost(data)
 
       if (isNaN(time)) {
         logError('"time" does not exist')
         restart()
         return
       }
-      if (!urlCaptcha) {
-        logError('"urlCaptcha" does not exist')
+      if (!namePost) {
+        logError('"namePost" does not exist')
         restart()
         return
       }
@@ -165,66 +154,19 @@ function autoRequest() {
         return
       }
 
-      urlCaptcha = BASE_URL + urlCaptcha
-      getCaptcha(urlCaptcha)
+      performAutoLikePage(namePost)
     })
     .catch(() => {
       restart(15)
     })
 }
 
-function getCaptcha(urlCaptcha) {
-  $self.getCaptcha(urlCaptcha)
+function performAutoLikePage(namePost) {
+  logNotice('perform AutoLikePage...')
+
+  $self.postAutoLikePage(ID, namePost)
     .then((res) => {
-      var captchaBase64 = new Buffer(res.data, 'binary').toString('base64')
-
-      $self.parseBase64ImageToString(captchaBase64)
-        .then((res) => {
-          if (res.data && res.data['OCRExitCode'] == 1) {
-            if (res.data['ParsedResults'] && res.data['ParsedResults'].length > 0 && res.data['ParsedResults'][0]['ParsedText']) {
-              var stringCaptcha = res.data['ParsedResults'][0]['ParsedText'].trim()
-              if (stringCaptcha && !isNaN(parseInt(stringCaptcha))) {
-                logNotice('Get string from captcha successfully: ' + stringCaptcha)
-                performAutoRequest(stringCaptcha)
-              } else {
-                logError('String is not found')
-                restart()
-                return
-              }
-            } else {
-              logError('String is not found')
-              restart()
-              return
-            }
-          } else {
-            logError('Parsing captcha failed')
-            restart()
-            return
-          }
-        })
-        .catch(() => {
-          restart(15)
-        })
-    })
-    .catch(() => {
-      restart(15)
-    })
-}
-
-function performAutoRequest(stringCaptcha) {
-  logNotice('perform AutoRequest...')
-
-  $self.postAutoRequest(ID, stringCaptcha)
-    .then((res) => {
-      var time = $handle.getTime(res.data)
-
-      if (isNaN(time)) {
-        logError('"time" does not exist')
-        restart()
-        return
-      }
-
-      if (time > 0) {
+      if (res.headers['Location'] && res.headers['Location'].indexOf('success') > -1) {
         logSuccess('Success: ' + (++countSuccess))
         restart()
         return
@@ -253,4 +195,4 @@ function restart(second = 0) {
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
-app.listen(process.env.PORT || 3000, () => console.log('App listening on port ' + (process.env.PORT || 3000)))
+app.listen(process.env.PORT || 3000, () => console.log('Fanpage App listening on port ' + (process.env.PORT || 3001)))

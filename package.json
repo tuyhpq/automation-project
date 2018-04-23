@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "fanpage": "node like-fanpage-vipfb/server.js",
     "debug": "node --inspect-brk server.js"
   },
   "author": "quyhp",

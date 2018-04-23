@@ -1,6 +1,6 @@
 const KEY_TIME = 'var seconds = '
-const KEY_NAME = 'input type="text" name="'
-const KEY_IMAGE = '/capthcax.php'
+const KEY_NAME = 'input style="border-bottom: 4px solid #ff8b14;box-shadow: 0 -4px 0 0 #ff8b14;" name="'
+const KEY_NAME_POST = 'input type="text" placeholder="FanPage ID or Username" style="width:100%;text-align:center;height:2.5em;margin-bottom:1px; border-bottom:3px solid #3b5998;box-shadow:0 -3px 0 0 #3b5998;" name="'
 
 /**
  * Get name to posting data for login
@@ -25,10 +25,10 @@ exports.getTime = function (data) {
 }
 
 /**
- * Get url of image
+ * Get name of posting
  */
-exports.getImage = function (data) {
-    var start = data.indexOf(KEY_IMAGE)
+exports.getNamePost = function (data) {
+    var start = data.indexOf(KEY_NAME_POST) + KEY_NAME_POST.length
     var end = data.indexOf('"', start + 1)
 
     return data.slice(start, end)
