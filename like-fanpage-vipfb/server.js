@@ -29,8 +29,6 @@ const OCR_KEY = $config.OCR_KEY
 var indexToken = 0
 var accessToken = ACCESS_TOKEN[indexToken]
 var countSuccess = 0
-var waitingTime = null
-var beforeTime = null
 
 // config axios
 var axios = Axios.create({
@@ -103,7 +101,7 @@ function accessIndex() {
       login(name)
     })
     .catch(() => {
-      restart(15)
+      restart()
     })
 }
 
@@ -112,7 +110,7 @@ function login(name) {
     .then((res) => {
       if (res.data.indexOf('Logout') === -1) {
         logError('Login failed')
-        restart(15)
+        restart()
         return
       } else {
         logNotice('Logged in successfully')
@@ -120,7 +118,7 @@ function login(name) {
       }
     })
     .catch(() => {
-      restart(15)
+      restart()
     })
 }
 
@@ -151,20 +149,15 @@ function autoLikePage() {
 
       logNotice('Time: ' + time)
       if (time > 0) {
-        time = parseInt(time / ACCESS_TOKEN.length)
-        if (waitingTime === null || waitingTime > time) {
-          waitingTime = time
-          beforeTime = waitingTime
-        }
         logError('please wait')
-        restart(waitingTime)
+        restart(30)
         return
       }
 
       performAutoLikePage(namePost)
     })
     .catch(() => {
-      restart(15)
+      restart()
     })
 }
 
@@ -175,7 +168,6 @@ function performAutoLikePage(namePost) {
     .then((res) => {
       if (res.request['path'] && res.request['path'].indexOf('success') > -1) {
         logSuccess('Success: ' + (++countSuccess))
-        waitingTime = beforeTime
         restart()
         return
       } else {
@@ -185,11 +177,11 @@ function performAutoLikePage(namePost) {
       }
     })
     .catch(() => {
-      restart(15)
+      restart()
     })
 }
 
-function restart(second = 0) {
+function restart(second = 15) {
   if (++indexToken >= ACCESS_TOKEN.length) {
     indexToken = 0
   }

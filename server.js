@@ -29,8 +29,6 @@ const OCR_KEY = $config.OCR_KEY
 var indexToken = 0
 var accessToken = ACCESS_TOKEN[indexToken]
 var countSuccess = 0
-var waitingTime = null
-var beforeTime = null
 
 // config axios
 var axios = Axios.create({
@@ -114,7 +112,7 @@ function accessIndex() {
       login(name)
     })
     .catch(() => {
-      restart(15)
+      restart()
     })
 }
 
@@ -123,7 +121,7 @@ function login(name) {
     .then((res) => {
       if (res.data.indexOf('Logout') === -1) {
         logError('Login failed')
-        restart(15)
+        restart()
         return
       } else {
         logNotice('Logged in successfully')
@@ -131,7 +129,7 @@ function login(name) {
       }
     })
     .catch(() => {
-      restart(15)
+      restart()
     })
 }
 
@@ -162,13 +160,8 @@ function autoRequest() {
 
       logNotice('Time: ' + time)
       if (time > 0) {
-        time = parseInt(time / ACCESS_TOKEN.length)
-        if (waitingTime === null || waitingTime > time) {
-          waitingTime = time
-          beforeTime = waitingTime
-        }
         logError('please wait')
-        restart(waitingTime)
+        restart(20)
         return
       }
 
@@ -176,7 +169,7 @@ function autoRequest() {
       getCaptcha(urlCaptcha)
     })
     .catch(() => {
-      restart(15)
+      restart()
     })
 }
 
@@ -210,11 +203,11 @@ function getCaptcha(urlCaptcha) {
           }
         })
         .catch(() => {
-          restart(15)
+          restart()
         })
     })
     .catch(() => {
-      restart(15)
+      restart()
     })
 }
 
@@ -233,7 +226,6 @@ function performAutoRequest(stringCaptcha) {
 
       if (time > 0) {
         logSuccess('Success: ' + (++countSuccess))
-        waitingTime = beforeTime
         restart()
         return
       } else {
@@ -243,11 +235,11 @@ function performAutoRequest(stringCaptcha) {
       }
     })
     .catch(() => {
-      restart(15)
+      restart()
     })
 }
 
-function restart(second = 0) {
+function restart(second = 10) {
   if (++indexToken >= ACCESS_TOKEN.length) {
     indexToken = 0
   }
