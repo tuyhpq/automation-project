@@ -30,6 +30,7 @@ var indexToken = 0
 var accessToken = ACCESS_TOKEN[indexToken]
 var countSuccess = 0
 var waitingTime = null
+var beforeTime = null
 
 // config axios
 var axios = Axios.create({
@@ -164,6 +165,7 @@ function autoRequest() {
         time = parseInt(time / ACCESS_TOKEN.length)
         if (waitingTime === null || waitingTime > time) {
           waitingTime = time
+          beforeTime = waitingTime
         }
         logError('please wait')
         restart(waitingTime)
@@ -231,6 +233,7 @@ function performAutoRequest(stringCaptcha) {
 
       if (time > 0) {
         logSuccess('Success: ' + (++countSuccess))
+        waitingTime = beforeTime
         restart()
         return
       } else {

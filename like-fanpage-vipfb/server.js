@@ -30,6 +30,7 @@ var indexToken = 0
 var accessToken = ACCESS_TOKEN[indexToken]
 var countSuccess = 0
 var waitingTime = null
+var beforeTime = null
 
 // config axios
 var axios = Axios.create({
@@ -153,6 +154,7 @@ function autoLikePage() {
         time = parseInt(time / ACCESS_TOKEN.length)
         if (waitingTime === null || waitingTime > time) {
           waitingTime = time
+          beforeTime = waitingTime
         }
         logError('please wait')
         restart(waitingTime)
@@ -173,6 +175,7 @@ function performAutoLikePage(namePost) {
     .then((res) => {
       if (res.request['path'] && res.request['path'].indexOf('success') > -1) {
         logSuccess('Success: ' + (++countSuccess))
+        waitingTime = beforeTime
         restart()
         return
       } else {
