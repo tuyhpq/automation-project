@@ -1,12 +1,8 @@
 const Axios = require('axios')
 const QueryString = require('querystring')
 const chalk = require('chalk')
-const express = require('express')
 const $handle = require('./handle.js')
-const $config = require('./config.js')
-
-// use express
-const app = express()
+const $config = require('./../config.js')
 
 // use to log of error and success
 const logError = function (message) {
@@ -20,8 +16,8 @@ const logSuccess = function (message) {
 }
 
 // const variable
-const BASE_URL = $config.BASE_URL
-const ID = $config.ID
+const BASE_URL = $config.BASE_URL_FANPAGE
+const ID = $config.ID_FANPAGE
 const ACCESS_TOKEN = $config.ACCESS_TOKEN
 const OCR_KEY = $config.OCR_KEY
 
@@ -192,7 +188,3 @@ function restart(second = 15) {
   logNotice(`restarting, please wait ${second} seconds`)
   setTimeout(accessIndex, second * 1000)
 }
-
-app.get('/', (req, res) => res.send('Hello World!'))
-
-app.listen(process.env.PORT || 3000, () => console.log('Fanpage App listening on port ' + (process.env.PORT || 3001)))
