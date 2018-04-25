@@ -32,7 +32,8 @@ var countSuccess = 0
 
 // config axios
 var axios = Axios.create({
-  baseURL: BASE_URL
+  baseURL: BASE_URL,
+  timeout: 20000
 })
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.interceptors.response.use((res) => {
