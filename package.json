@@ -7,9 +7,11 @@
     "start": "node server.js",
     "fanpage": "node like-fanpage-vipfb/server.js",
     "like": "node like-post-icelike/server.js",
+    "vn": "node sub-vn/server.js",
     "debug": "node --inspect-brk server.js",
     "debug:fanpage": "node --inspect-brk like-fanpage-vipfb/server.js",
-    "debug:like": "node --inspect-brk like-post-icelike/server.js"
+    "debug:like": "node --inspect-brk like-post-icelike/server.js",
+    "debug:vn": "node --inspect-brk sub-vn/server.js"
   },
   "author": "quyhp",
   "license": "ISC",

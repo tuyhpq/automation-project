@@ -112,7 +112,7 @@ function accessIndex() {
 
       login(name)
     })
-    .catch(() => {
+    .catch((err) => {
       restart()
     })
 }
@@ -162,7 +162,7 @@ function autoRequest() {
       logNotice('Time: ' + time)
       if (time > 0) {
         logError('please wait')
-        restart(20)
+        restart(60)
         return
       }
 

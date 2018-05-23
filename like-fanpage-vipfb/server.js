@@ -147,7 +147,7 @@ function autoLikePage() {
       logNotice('Time: ' + time)
       if (time > 0) {
         logError('please wait')
-        restart(30)
+        restart(120)
         return
       }
 
